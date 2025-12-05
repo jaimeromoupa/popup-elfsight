@@ -2,138 +2,28 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Aviso Google Classroom</title>
-
-  <!-- Cargar plataforma Elfsight en HEAD (recomendado) -->
-  https://elfsightcdn.com/platform.js</script>
-
-  <style>
-    body { margin:0; font-family:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif; }
-    .container { max-width: 900px; margin: 40px auto; padding: 0 16px; }
-    .card { border:1px solid #eee; border-radius:12px; box-shadow:0 8px 24px rgba(0,0,0,.08); overflow:hidden; }
-    .card-header { padding:12px 16px; background:#fafafa; border-bottom:1px solid #eee; font-weight:700; color:#202124; }
-    .card-body { position:relative; height:520px; background:#f5f5f5; }
-    /* Elfsight ocupa todo el panel */
-    .card-body .elfsight-app-936dea89-9ea7-434b-9181-dc679df0f8e2 { position:absolute; inset:0; width:100%; height:100%; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="card">
-      <div class="card-header">Aviso Google Classroom</div>
-      <div class="card-body">
-        <!-- Solo el contenedor; el script ya está cargado en HEAD -->
-        <div class="elfsight-app-936dea89-9ea7-434b-9181-dc679df0f8e2" data-elfsight-app-lazy></div>
-      </div>
-    </div>
-  </div>
-</body>
-</html>
-
-  /* Overlay del popup (oculto por defecto) */
-  .popup-overlay {
-    position: fixed;
-    inset: 0;
-    background: var(--overlay);
-    display: none;                /* oculto por defecto */
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    padding: 24px;
-  }
-  /* Mostrar overlay cuando el checkbox está marcado */
-  #popupToggle:checked ~ .popup-overlay {
-    display: flex;
-  }
-
-  /* Contenedor del popup */
-  .popup-content {
-    background: #fff;
-    border-radius: 12px;
-    width: min(900px, 96vw);
-    max-height: 86vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    box-shadow: 0 12px 36px rgba(0,0,0,0.25);
-    border: 1px solid var(--gris-200);
-  }
-
-  /* Encabezado / Pie */
-  .popup-header, .popup-footer {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 8px; padding: 12px 16px; background: var(--gris-100);
-    border-bottom: 1px solid var(--gris-200);
-  }
-  .popup-footer { border-top: 1px solid var(--gris-200); border-bottom: none; justify-content: flex-end; }
-  .popup-title { margin: 0; font-size: 18px; font-weight: 700; color: var(--texto); }
-
-  /* Cerrar (label que desmarca el checkbox) */
-  .close-btn {
-    border: 1px solid var(--gris-200);
-    background: #fff; color: var(--gris-400);
-    font-size: 14px; font-weight: 600;
-    padding: 8px 12px; border-radius: 6px; cursor: pointer;
-    transition: background .15s ease, color .15s ease, border-color .15s ease;
-  }
-  .close-btn:hover { background: var(--gris-100); color: var(--texto); border-color: var(--gris-200); }
-
-  /* Área del contenido del popup */
-  .popup-body {
-    position: relative; width: 100%;
-    height: 500px; background: #f5f5f5; /* ajusta altura si lo necesitas */
-  }
-
-  /* Responsive */
-  @media (max-width: 480px) {
-    .popup-title { font-size: 16px; }
-    .popup-content { width: 98vw; }
-    .popup-body { height: 400px; }
-  }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Prueba de popup</title>
+<style>
+  #popupToggle { position:absolute; left:-9999px; }
+  .btn { display:inline-block; padding:12px 18px; background:#0b57d0; color:#fff; border-radius:8px; font-weight:600; cursor:pointer; }
+  .popup-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.55); display:none; align-items:center; justify-content:center; z-index:9999; }
+  #popupToggle:checked ~ .popup-overlay { display:flex; }
+  .popup-content { background:#fff; border-radius:12px; width:min(600px,90vw); padding:24px; box-shadow:0 12px 36px rgba(0,0,0,0.25); }
+  .close-btn { margin-top:16px; padding:8px 12px; border:1px solid #eee; border-radius:6px; cursor:pointer; }
 </style>
 </head>
 <body>
-
-  <!-- Checkbox raíz -->
-  <input type="checkbox" id="popupToggle" aria-hidden="true" />
-
-  <!-- Contenido de la página -->
-  <div class="wrap">
-    <!-- Botón que abre el popup -->
-    <label for="popupToggle" class="btn" aria-controls="popupToggle" aria-expanded="false">
-      Abrir Aviso Classroom
-    </label>
-  </div>
-
-  <!-- Overlay del popup -->
-  <div class="popup-overlay" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+  <input type="checkbox" id="popupToggle" />
+  <p><label for="popupToggle" class="btn">Abrir prueba</label></p>
+  <div class="popup-overlay">
     <div class="popup-content">
-      <div class="popup-header">
-        <h2 id="popup-title" class="popup-title">Aviso Google Classroom</h2>
-        <!-- Cerrar: desmarca el checkbox -->
-        <label for="popupToggle" class="close-btn" role="button" aria-label="Cerrar">✕ Cerrar</label>
-      </div>
-
-      <div class="popup-body">
-        <!-- Opción A: Script de Elfsight -->
-        https://elfsightcdn.com/platform.js</script>
-        <div class="elfsight-app-936dea89-9ea7-434b-9181-dc679df0f8e2" data-elfsight-app-lazy></div>
-
-        <!-- Opción B (si A no renderiza): usa el enlace externo dentro de un iframe
-        https://936dea899ea7434b9181dc679df0f8e2.elf.site/
-        </iframe>
-        -->
-      </div>
-
-      <div class="popup-footer">
-        <!-- Cerrar: desmarca el checkbox -->
-        <label for="popupToggle" class="close-btn" role="button">Cerrar</label>
-      </div>
+      <h2>Popup de prueba</h2>
+      <p>Si ves este texto, el overlay funciona y tu página sí está interpretando HTML.</p>
+      <label for="popupToggle" class="close-btn">Cerrar</label>
     </div>
   </div>
-
 </body>
 </html>
 
