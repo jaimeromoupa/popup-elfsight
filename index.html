@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -22,7 +21,16 @@
     background: #fff;
     color: var(--texto);
   }
-  .wrap { padding: 16px; }
+
+  /* Checkbox invisible a nivel raíz */
+  #popupToggle {
+    position: absolute;
+    left: -9999px;
+    width: 1px; height: 1px;
+    overflow: hidden;
+  }
+
+  /* Botón (label asociado al checkbox) */
   .btn {
     display: inline-block;
     padding: 12px 18px;
@@ -33,39 +41,68 @@
     font-weight: 600;
     box-shadow: 0 2px 10px rgba(11,87,208,0.25);
     cursor: pointer;
+    transition: transform .08s ease, box-shadow .2s ease, background .2s ease;
   }
-  .btn:hover { background: var(--azul-oscuro); }
+  .btn:hover { background: var(--azul-oscuro); box-shadow: 0 4px 16px rgba(11,87,208,0.35); }
+  .btn:active { transform: translateY(1px); }
+
+  .wrap { padding: 16px; }
+
+  /* Overlay del popup (oculto por defecto) */
   .popup-overlay {
-    position: fixed; inset: 0;
+    position: fixed;
+    inset: 0;
     background: var(--overlay);
-    display: none; align-items: center; justify-content: center;
-    z-index: 9999; padding: 24px;
+    display: none;                /* oculto por defecto */
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 24px;
   }
+  /* Mostrar overlay cuando el checkbox está marcado */
+  #popupToggle:checked ~ .popup-overlay {
+    display: flex;
+  }
+
+  /* Contenedor del popup */
   .popup-content {
-    background: #fff; border-radius: 12px;
-    width: min(900px, 96vw); max-height: 86vh;
-    display: flex; flex-direction: column; overflow: hidden;
+    background: #fff;
+    border-radius: 12px;
+    width: min(900px, 96vw);
+    max-height: 86vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     box-shadow: 0 12px 36px rgba(0,0,0,0.25);
     border: 1px solid var(--gris-200);
   }
+
+  /* Encabezado / Pie */
   .popup-header, .popup-footer {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 12px 16px; background: var(--gris-100);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px; padding: 12px 16px; background: var(--gris-100);
     border-bottom: 1px solid var(--gris-200);
   }
   .popup-footer { border-top: 1px solid var(--gris-200); border-bottom: none; justify-content: flex-end; }
   .popup-title { margin: 0; font-size: 18px; font-weight: 700; color: var(--texto); }
+
+  /* Cerrar (label que desmarca el checkbox) */
   .close-btn {
     border: 1px solid var(--gris-200);
     background: #fff; color: var(--gris-400);
-    font-size: 14px; font-weight: 600; padding: 8px 12px;
-    border-radius: 6px; cursor: pointer;
+    font-size: 14px; font-weight: 600;
+    padding: 8px 12px; border-radius: 6px; cursor: pointer;
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
   }
-  .close-btn:hover { background: var(--gris-100); color: var(--texto); }
+  .close-btn:hover { background: var(--gris-100); color: var(--texto); border-color: var(--gris-200); }
+
+  /* Área del contenido del popup */
   .popup-body {
     position: relative; width: 100%;
-    height: 500px; background: #f5f5f5;
+    height: 500px; background: #f5f5f5; /* ajusta altura si lo necesitas */
   }
+
+  /* Responsive */
   @media (max-width: 480px) {
     .popup-title { font-size: 16px; }
     .popup-content { width: 98vw; }
@@ -74,36 +111,44 @@
 </style>
 </head>
 <body>
-<div class="wrap">
-  <button class="btn" onclick="openPopup()">Abrir Aviso Classroom</button>
-</div>
 
-<div id="popup" class="popup-overlay">
-  <div class="popup-content">
-    <div class="popup-header">
-      <h2 class="popup-title">Aviso Google Classroom</h2>
-      <button class="close-btn" onclick="closePopup()">✕ Cerrar</button>
-    </div>
-    <div class="popup-body">
-      <!-- Widget Elfsight -->
-      <script src="https://elfsightorm.js
-      <div class="elfsight-app-936dea89-9ea7-434b-9181-dc679df0f8e2" data-elfsight-app-lazy></div>
-    </div>
-    <div class="popup-footer">
-      <button class="close-btn" onclick="closePopup()">Cerrar</button>
+  <!-- Checkbox raíz -->
+  <input type="checkbox" id="popupToggle" aria-hidden="true" />
+
+  <!-- Contenido de la página -->
+  <div class="wrap">
+    <!-- Botón que abre el popup -->
+    <label for="popupToggle" class="btn" aria-controls="popupToggle" aria-expanded="false">
+      Abrir Aviso Classroom
+    </label>
+  </div>
+
+  <!-- Overlay del popup -->
+  <div class="popup-overlay" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+    <div class="popup-content">
+      <div class="popup-header">
+        <h2 id="popup-title" class="popup-title">Aviso Google Classroom</h2>
+        <!-- Cerrar: desmarca el checkbox -->
+        <label for="popupToggle" class="close-btn" role="button" aria-label="Cerrar">✕ Cerrar</label>
+      </div>
+
+      <div class="popup-body">
+        <!-- Opción A: Script de Elfsight -->
+        https://elfsightcdn.com/platform.js</script>
+        <div class="elfsight-app-936dea89-9ea7-434b-9181-dc679df0f8e2" data-elfsight-app-lazy></div>
+
+        <!-- Opción B (si A no renderiza): usa el enlace externo dentro de un iframe
+        https://936dea899ea7434b9181dc679df0f8e2.elf.site/
+        </iframe>
+        -->
+      </div>
+
+      <div class="popup-footer">
+        <!-- Cerrar: desmarca el checkbox -->
+        <label for="popupToggle" class="close-btn" role="button">Cerrar</label>
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-function openPopup() {
-  document.getElementById('popup').style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-}
-function closePopup() {
-  document.getElementById('popup').style.display = 'none';
-  document.body.style.overflow = '';
-}
-</script>
 </body>
 </html>
