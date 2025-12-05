@@ -1,32 +1,180 @@
 
-<!-- Dentro del popup-body -->
-<div id="popupText" style="padding:12px 16px; color:#202124;">
-  <!-- Aquí puedes poner tu texto de Google Classroom o indicaciones -->
-  <h3 style="margin:0 0 8px; font-size:16px;">Comunicado Google Classroom</h3>
-  <p style="margin:0 0 12px;">Estimados usuarios, favor de revisar el siguiente aviso relacionado con Classroom.</p>
-</div>
-<div id="elfsightContainer" style="position:absolute; inset:0; width:100%; height:100%;"></div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Aviso Google Classroom</title>
+
+<!-- Plataforma Elfsight (se carga una sola vez por página) -->
+<script src="https://om/platform.js</script>
+
+<style>
+  :root {
+    --azul: #0b57d0;
+    --azul-oscuro: #0847aa;
+    --gris-100: #fafafa;
+    --gris-200: #eee;
+    --gris-400: #5f6368;
+    --texto: #202124;
+    --overlay: rgba(0,0,0,0.55);
+  }
+  body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:var(--texto); background:#fff; }
+  .wrap { padding:16px; }
+
+  /* Botón abrir */
+  .btn {
+    display:inline-block; padding:12px 18px; background:var(--azul); color:#fff;
+    text-decoration:none; border-radius:8px; font-weight:600;
+    box-shadow:0 2px 10px rgba(11,87,208,0.25); cursor:pointer;
+    transition:transform .08s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .btn:hover { background:var(--azul-oscuro); box-shadow:0 4px 16px rgba(11,87,208,0.35); }
+  .btn:active { transform:translateY(1px); }
+
+  /* Overlay popup */
+  .popup-overlay {
+    position:fixed; inset:0; background:var(--overlay);
+    display:none; align-items:center; justify-content:center; z-index:9999; padding:24px;
+  }
+  .popup-content {
+    background:#fff; border-radius:12px; width:min(900px,96vw); max-height:86vh;
+    display:flex; flex-direction:column; overflow:hidden;
+    box-shadow:0 12px 36px rgba(0,0,0,0.25); border:1px solid var(--gris-200);
+  }
+  .popup-header, .popup-footer {
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+    padding:12px 16px; background:var(--gris-100); border-bottom:1px solid var(--gris-200);
+  }
+  .popup-footer { border-top:1px solid var(--gris-200); border-bottom:none; justify-content:flex-end; }
+  .popup-title { margin:0; font-size:18px; font-weight:700; color:var(--texto); }
+
+  .close-btn {
+    border:1px solid var(--gris-200); background:#fff; color:var(--gris-400);
+    font-size:14px; font-weight:600; padding:8px 12px; border-radius:6px; cursor:pointer;
+    transition:background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .close-btn:hover { background:var(--gris-100); color:var(--texto); border-color:var(--gris-200); }
+
+  /* Cuerpo del popup */
+  .popup-body {
+    position:relative; width:100%; height:auto; background:#fff;
+    display:flex; flex-direction:column;
+  }
+
+  /* Bloque superior (texto/imagen) */
+  .announcement {
+    padding:16px; border-bottom:1px solid var(--gris-200); background:#fff;
+  }
+  .announcement h3 {
+    margin:0 0 8px; font-size:16px; color:var(--texto);
+  }
+  .announcement p {
+    margin:0 0 12px; color:#3c4043;
+  }
+  .announcement .img-wrap {
+    width:100%; display:flex; justify-content:center;
+  }
+  .announcement img {
+    max-width:100%;
+    height:auto;
+    border-radius:12px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.08);
+  }
+
+  /* Contenedor del widget debajo del anuncio */
+  .widget-panel {
+    position:relative; width:100%; height:520px; background:#f5f5f5;
+  }
+  .widget-panel .elfsight-app-936dea89-9ea7-434b-9181-dc679df0f8e2 {
+    position:absolute; inset:0; width:100%; height:100%;
+  }
+
+  @media (max-width:480px) {
+    .popup-title { font-size:16px; }
+    .widget-panel { height:440px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="wrap">
+    <button class="btn" id="openBtn">Abrir Aviso Classroom</button>
+  </div>
+
+  <!-- Overlay del popup -->
+  <div id="popup" class="popup-overlay" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+    <div class="popup-content">
+      <div class="popup-header">
+        <h2 id="popup-title" class="popup-title">Aviso Google Classroom</h2>
+        <button class="close-btn" id="closeBtn" aria-label="Cerrar">✕ Cerrar</button>
+      </div>
+
+      <div class="popup-body">
+        <!-- 🔹 Bloque superior: TEXTO y/o IMAGEN -->
+        <div class="announcement">
+          <!-- Texto (puedes editarlo libremente) -->
+          <h3>Cambio importante en Google Classroom</h3>
+          <p>
+            A partir de <strong>diciembre 2025</strong>, Google Classroom aplicará cambios para
+            co‑profesores externos en organizaciones con Google Workspace for Education.
+            Consulta el comunicado oficial y las opciones recomendadas.
+          </p>
+
+          <!-- Imagen (usa tu archivo Google.jpg en la raíz del repo) -->
+          <div class="img-wrap">
+            <img src="Google.jpg" altv>
+        </div>
+
+        <!-- 🔹 Panel del widget (debajo del anuncio) -->
+        <div class="widget-panel" id="widgetPanel">
+          <!-- El contenedor de Elfsight se inyecta al abrir el popup para garantizar visibilidad -->
+        </div>
+      </div>
+
+      <div class="popup-footer">
+        <button class="close-btn" id="closeBtn2">Cerrar</button>
+      </div>
+    </div>
+  </div>
 
 <script>
+  const popup = document.getElementById('popup');
+  const body = document.body;
+  const openBtn = document.getElementById('openBtn');
+  const closeBtn = document.getElementById('closeBtn');
+  const closeBtn2 = document.getElementById('closeBtn2');
+  const widgetPanel = document.getElementById('widgetPanel');
   let elfsightLoaded = false;
 
   function openPopup() {
     popup.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
+    body.style.overflow = 'hidden';
 
+    // Cargar Elfsight cuando el panel es visible (evita problemas de display:none)
     if (!elfsightLoaded) {
-      // Inyecta el contenedor exacto de tu app (sin lazy)
       const container = document.createElement('div');
       container.className = 'elfsight-app-936dea89-9ea7-434b-9181-dc679df0f8e2';
-      document.getElementById('elfsightContainer').appendChild(container);
+      widgetPanel.appendChild(container);
 
-      // Carga la librería de Elfsight una sola vez
-      const s = document.createElement('script');
-      s.src = 'https://elfsightcdn.com/platform.js';
-      s.async = true;
-      document.head.appendChild(s);
+      // Si ya tienes la plataforma cargada en <head> con defer, no hace falta volver a inyectar.
+      // Si por alguna razón no cargó, puedes descomentar estas dos líneas:
+      // const s = document.createElement('script');
+      // s.src = 'https://elfsightcdn.com/platform.js'; s.async = true; document.head.appendChild(s);
 
       elfsightLoaded = true;
     }
   }
+
+  function closePopup() {
+    popup.style.display = 'none';
+    body.style.overflow = '';
+  }
+
+  openBtn.addEventListener('click', openPopup);
+  closeBtn.addEventListener('click', closePopup);
+  closeBtn2.addEventListener('click', closePopup);
 </script>
+
+</body>
+</html>
